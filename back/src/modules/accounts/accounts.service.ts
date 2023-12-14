@@ -46,7 +46,7 @@ export class AccountsService {
 
     if(!findAccount) throw new NotFoundException("Conta não exite")
 
-    return findAccount;
+    return plainToInstance(Account, findAccount);
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
@@ -61,7 +61,7 @@ export class AccountsService {
       data: { ...updateAccountDto }
     })
 
-    return accountUpdate;
+    return plainToInstance(Account, accountUpdate);
   }
 
   async remove(id: number) {
@@ -74,6 +74,7 @@ export class AccountsService {
     await this.prisma.account.delete({
       where: { id }
     })
+    
     return;
   } 
 }
