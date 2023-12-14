@@ -18,4 +18,6 @@ model Account {
   isAdmin Boolean @default(false)
   token String
   isValidated Boolean @default(false)
+
+  @@map("accounts")
 }
