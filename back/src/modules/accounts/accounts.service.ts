@@ -5,6 +5,7 @@ import { PrismaService } from 'src/database/prismaService';
 import { randomUUID } from 'crypto';
 import { Account } from './entities/account.entity';
 import { hash } from 'bcrypt';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class AccountsService {
@@ -24,12 +25,12 @@ export class AccountsService {
     
     const passord = await hash(createAccountDto.password, 10)
     createAccountDto.password = passord
-    
+
     const account = await this.prisma.account.create({
       data: {...createAccountDto, token}
     })
 
-    return account;
+    return plainToInstance(Account, account);
   }
 
   async findAll() {

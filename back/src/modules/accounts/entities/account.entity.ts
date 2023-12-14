@@ -1,3 +1,5 @@
+import { Exclude } from "class-transformer";
+
 export class Account {
     constructor(token: string) {
         token = this.token
@@ -5,6 +7,7 @@ export class Account {
 
     name: string;
     email: string;
+    @Exclude()
     password: string;
     isAdmin: boolean = false;
     token: string
