@@ -4,6 +4,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { PrismaService } from 'src/database/prismaService';
 import { randomUUID } from 'crypto';
 import { Account } from './entities/account.entity';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class AccountsService {
@@ -20,7 +21,10 @@ export class AccountsService {
 
     const instance = new Account(token)
     Object.assign(instance, {...createAccountDto, token})
-
+    
+    const passord = await hash(createAccountDto.password, 10)
+    createAccountDto.password = passord
+    
     const account = await this.prisma.account.create({
       data: {...createAccountDto, token}
     })
@@ -29,7 +33,6 @@ export class AccountsService {
   }
 
   async findAll() {
-    return "ok"
     const accounts = await this.prisma.account.findMany()
 
     return accounts;
