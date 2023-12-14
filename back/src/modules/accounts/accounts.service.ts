@@ -36,7 +36,7 @@ export class AccountsService {
   async findAll() {
     const accounts = await this.prisma.account.findMany()
 
-    return accounts;
+    return plainToInstance(Account, accounts);
   }
 
   async findOne(id: number) {
@@ -74,7 +74,7 @@ export class AccountsService {
     await this.prisma.account.delete({
       where: { id }
     })
-    
+
     return;
   } 
 }
