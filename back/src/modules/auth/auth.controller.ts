@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { AuthGuard } from './auth.guard';
+import { JwtAuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +13,7 @@ export class AuthController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   msg(@Request() req: Request) {
     return req;
   }
