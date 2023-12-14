@@ -1,29 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { PrismaService } from 'src/database/prismaService';
+import { randomUUID } from 'crypto';
+import { Account } from './entities/account.entity';
 
 @Injectable()
 export class AccountsService {
   constructor(private prisma: PrismaService){}
-  
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+
+  async create(createAccountDto: CreateAccountDto) {
+    const findAccount = await this.prisma.account.findUnique({
+      where: { email: createAccountDto.email }
+    })
+
+    if(findAccount) throw new ConflictException("Email inválido")
+
+    const token = randomUUID()
+
+    const instance = new Account(token)
+    Object.assign(instance, {...createAccountDto, token})
+
+    const account = await this.prisma.account.create({
+      data: {...createAccountDto, token}
+    })
+
+    return account;
   }
 
-  findAll() {
-    return `This action returns all accounts`;
+  async findAll() {
+    const accounts = await this.prisma.account.findMany()
+
+    return accounts;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findOne(id: number) {
+    const findAccount = await this.prisma.account.findUnique({
+      where: { id }
+    })
+
+    if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    return findAccount;
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async update(id: number, updateAccountDto: UpdateAccountDto) {
+    const findAccount = await this.prisma.account.findUnique({
+      where: { id }
+    })
+
+    if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    const accountUpdate = this.prisma.account.update({
+      where: { id },
+      data: { ...updateAccountDto }
+    })
+
+    return accountUpdate;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
-  }
+  async remove(id: number) {
+    const findAccount = await this.prisma.account.findUnique({
+      where: { id }
+    })
+
+    if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    await this.prisma.account.delete({
+      where: { id }
+    })
+    return;
+  } 
 }
