@@ -29,6 +29,7 @@ export class AccountsService {
   }
 
   async findAll() {
+    return "ok"
     const accounts = await this.prisma.account.findMany()
 
     return accounts;
