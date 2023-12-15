@@ -61,22 +61,26 @@ export class AccountsService {
     return plainToInstance(Account, accounts);
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, accountId: number, isAdmin: boolean) {
     const findAccount = await this.prisma.account.findUnique({
       where: { id }
     })
 
     if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    if(findAccount.id != accountId && !isAdmin) throw new ConflictException()  
 
     return plainToInstance(Account, findAccount);
   }
 
-  async update(id: number, updateAccountDto: UpdateAccountDto) {
+  async update(id: number, updateAccountDto: UpdateAccountDto, accountId: number, isAdmin: boolean) {
     const findAccount = await this.prisma.account.findUnique({
       where: { id }
     })
 
     if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    if(findAccount.id != accountId && !isAdmin) throw new ConflictException()  
 
     const accountUpdate = this.prisma.account.update({
       where: { id },
@@ -86,12 +90,14 @@ export class AccountsService {
     return plainToInstance(Account, accountUpdate);
   }
 
-  async remove(id: number) {
+  async remove(id: number, accountId: number, isAdmin: boolean) {
     const findAccount = await this.prisma.account.findUnique({
       where: { id }
     })
 
     if(!findAccount) throw new NotFoundException("Conta não exite")
+
+    if(findAccount.id != accountId && !isAdmin) throw new ConflictException()  
 
     await this.prisma.account.delete({
       where: { id }

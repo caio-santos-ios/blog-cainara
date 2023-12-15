@@ -25,20 +25,21 @@ export class AccountsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountsService.findOne(+id);
+  @UseGuards(AuthJwtGuard)
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.accountsService.findOne(+id, req.user.id, req.user.isAdmin);
   }
 
   @Patch(':id')
   @UseGuards(AuthJwtGuard)
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountsService.update(+id, updateAccountDto);
+  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto, @Request() req) {
+    return this.accountsService.update(+id, updateAccountDto, req.user.id, req.user.isAdmin);
   }
 
   @Delete(':id')
   @UseGuards(AuthJwtGuard)
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    return this.accountsService.remove(+id);
+  remove(@Param('id') id: string, @Request() req) {
+    return this.accountsService.remove(+id, req.user.id, req.user.isAdmin);
   }
 }

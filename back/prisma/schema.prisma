@@ -11,13 +11,51 @@ datasource db {
 }
 
 model Account {
-  id Int @id() @default(autoincrement())
-  name String
-  email String @unique
-  password String
-  isAdmin Boolean @default(false)
-  token String
-  isValidated Boolean @default(false)
+  id            Int @id() @default(autoincrement())
+  name          String
+  email         String @unique
+  password      String
+  isAdmin       Boolean @default(false)
+  token         String
+  isValidated   Boolean @default(false)
+  posts         Post[]
+  likes         Like[]
+  comment       Comment[]
 
   @@map("accounts")
+}
+
+model Post {
+  id            Int       @id() @default(autoincrement())
+  title         String
+  description   String
+  coverPhoto    Json
+  photos        Json[]
+  author        Account   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId      Int
+  likes         Like[]
+  comments      Comment[]
+
+  @@map("posts")
+}
+
+model Like {
+  id        Int    @id() @default(autoincrement())
+  post      Post   @relation(fields: [postId], references: [id])
+  postId    Int
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId Int
+
+  @@map("likes")
+}
+
+model Comment {
+  id        Int    @id() @default(autoincrement())
+  text      String
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId Int
+
+  @@map("comments")
 }
