@@ -6,10 +6,11 @@ import { randomUUID } from 'crypto';
 import { Account } from './entities/account.entity';
 import { hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
+import { MailService } from './utils/mail.service';
 
 @Injectable()
 export class AccountsService {
-  constructor(private prisma: PrismaService){}
+  constructor(private prisma: PrismaService, private mail: MailService){}
 
   async create(createAccountDto: CreateAccountDto) {
     const findAccount = await this.prisma.account.findUnique({
@@ -21,16 +22,37 @@ export class AccountsService {
     const token = randomUUID()
 
     const instance = new Account(token)
+
+    const conf = this.mail.templateConfirmationAccount(createAccountDto.email, createAccountDto.name, token)
+
     Object.assign(instance, {...createAccountDto, token})
-    
+   
     const passord = await hash(createAccountDto.password, 10)
     createAccountDto.password = passord
 
+    
     const account = await this.prisma.account.create({
       data: {...createAccountDto, token}
     })
 
+    await this.mail.sendEmail(conf)
+    
     return plainToInstance(Account, account);
+  }
+
+  async confirmationAccount(token: string){
+    const findAccount = await this.prisma.account.findFirst({
+      where: { token }
+    })
+
+    if(!findAccount) throw new ConflictException("token inválido")
+
+    await this.prisma.account.update({
+      where: { id: findAccount.id },
+      data: { isValidated: true, token: "" }
+    })
+
+    return "Conta confirmada"
   }
 
   async findAll() {

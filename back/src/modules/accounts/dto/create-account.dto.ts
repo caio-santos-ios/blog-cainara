@@ -1,10 +1,11 @@
-import { IsBoolean, IsString } from "class-validator";
+import { IsBoolean, IsDefined, IsEmail, IsString } from "class-validator";
 
 export class CreateAccountDto {
     @IsString()
     name: string;
 
     @IsString()
+    @IsEmail()
     email: string;
 
     @IsString()
@@ -13,8 +14,7 @@ export class CreateAccountDto {
     @IsBoolean()
     isAdmin: boolean = false;
 
-    @IsString()
-    token: string
+        token: string
     
     @IsBoolean()
     isValidated: boolean = false
