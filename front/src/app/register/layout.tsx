@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import '@/style/styleForm.css'
 
 export const metadata: Metadata = {
-    title: "Login"
+    title: "Register"
 }
 
 const RegisterLayout = ({children}: {children: React.ReactNode}) => {

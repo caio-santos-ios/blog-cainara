@@ -4,6 +4,7 @@ import { api } from "@/services/api";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Register = {
     name: string;
@@ -18,13 +19,12 @@ export const RegisterForm = () => {
 
     const registion = async (data: Register) => {
         setLoading(true)
-        console.log(data)
         try {
             const res = await api.post("/accounts", data)
             setLoading(false)
-            console.log(res.data)
+            reset()
+            toast.success("Conta criada")
         } catch (error) {
-            console.log(error)
             setLoading(false)
         }
     }
@@ -46,7 +46,7 @@ export const RegisterForm = () => {
             </form> 
             <div className="border-t-2 border-slate-300">
                 <p className="text-center">Ou</p>
-                <p>Ainda não tem uma conta? <Link className="text-blue-500" href="/register">Cadastrar-se</Link></p>
+                <p>Já tem uma conta? <Link className="text-blue-500" href="/login">Fazer login</Link></p>
             </div>
         </div>
     )
