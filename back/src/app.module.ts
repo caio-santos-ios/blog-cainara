@@ -22,6 +22,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: 'posts', method: RequestMethod.GET },
         { path: 'posts/:id', method: RequestMethod.GET },
+        { path: 'accounts', method: RequestMethod.POST }
         { path: 'accounts/:id', method: RequestMethod.GET },
         { path: 'accounts/:id', method: RequestMethod.PATCH },
         { path: 'accounts/:id', method: RequestMethod.DELETE },
