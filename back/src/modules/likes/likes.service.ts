@@ -22,10 +22,17 @@ export class LikesService {
       }
     })
 
-
     if(accountLike) {
-      accountLike.likes.map((like) => {
-        if(like.accountId == accountId) throw new ConflictException("Poste já curtido")
+      accountLike.likes.map(async (like) => {
+        if(like.accountId == accountId) {
+          await this.prisma.like.delete({
+            where: {
+              id: like.id
+            }
+          })
+
+          return "deslike"
+        } 
       })
     }
 

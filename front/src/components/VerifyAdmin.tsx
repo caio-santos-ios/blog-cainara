@@ -20,6 +20,6 @@ export const VerifyAdmin = async () => {
     const user = await verify(authDecoded.id, authDecoded.token)
 
     if(!user.isAdmin) return redirect("/")
-    console.log(user.isAdmin)
+
     return(<></>)
 }

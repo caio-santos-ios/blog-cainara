@@ -22,7 +22,7 @@ export const LoginForm = () => {
         setLoading(true)
         try {
             const res = await api.post("/auth", data)
-            setCookie("auth", res.data)
+            setCookie("auth", res.data, { maxAge: 30 * 300})
             router.push("/admin")
             setLoading(false)
         } catch (error) {
