@@ -19,19 +19,11 @@ export const CardPost = ({ id, coverPhoto, photos, title, description, comments,
 
     const like = async (id: string) => {
         if(!authDecoded) return toast("Faça login para curtir os postes")
-        // setIsLike(!isLike)
         
-        if(isLike){
-            setQtdLike(qtdLike - 1)
-            try {
-                await api.delete(`/likes/${id}`, { headers: { Authorization: `Bearer ${authDecoded.token}` } })
-            } catch (error) {console.log(error)}
-        }else{
-            setQtdLike(qtdLike + 1)
-            try {
-                await api.post("/likes", { postId: Number(id) }, { headers: { Authorization: `Bearer ${authDecoded.token}` } })
-            } catch (error) {console.log(error)}
-        }
+        try {
+            const res = await api.post("/likes", { postId: Number(id) }, { headers: { Authorization: `Bearer ${authDecoded.token}` } })
+            console.log(res)
+        } catch (error) {console.log(error)}
     }
 
     const comment = (id: string) => {
