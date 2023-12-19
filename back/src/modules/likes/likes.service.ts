@@ -22,20 +22,18 @@ export class LikesService {
       }
     })
 
-    if(accountLike) {
-      accountLike.likes.map(async (like) => {
-        if(like.accountId == accountId) {
-          await this.prisma.like.delete({
-            where: {
-              id: like.id
-            }
-          })
-
-          return "deslike"
-        } 
+    if(accountLike && accountLike.likes.length > 0){
+      const myLike = await Promise.all(
+        accountLike.likes.filter((el: any) => el.accountId == accountId)
+      )
+      await this.prisma.like.delete({
+        where: {
+          id: myLike[0].id
+        }
       })
+      return "delike"
     }
-
+   
     const like = await this.prisma.like.create({
       data: { ...createLikeDto, accountId }
     })
