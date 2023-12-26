@@ -30,7 +30,7 @@ export const ListPost = () => {
                 loading ? 
                 [1, 2, 3, 4, 5].map((el: number) => {
                     return(
-                        <div className="animate-pulse w-full">
+                        <div key={el} className="animate-pulse w-full">
                             <div className="bg-slate-500 w-full max-w-[30rem] h-96 rounded-2xl flex flex-col gap-6">
                                 <div className="bg-slate-700 rounded-t-2xl h-64 w-full"></div>
                                 <div className="px-6">
@@ -43,10 +43,6 @@ export const ListPost = () => {
                 :
                 posts.map((post: Tpost) => {
                     return <CardPost key={post.id} id={post.id} coverPhoto={post.coverPhoto} title={post.title} description={post.description} photos={post.photos} comments={post.comments} likes={false} _count={post._count} authorId={post.authorId} />
-                    return(
-                        post.likes.map((el: any) => {
-                        })
-                    )
                 } )
             }
         </ul>
