@@ -34,7 +34,7 @@ export class LikesService {
             id: myLike[0].id
           }
         })
-        return "delike"
+        return "deslike"
       }
     }
    

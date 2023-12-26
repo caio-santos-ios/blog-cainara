@@ -6,4 +6,5 @@
   .formReset { @apply flex flex-col gap-4 p-4 w-full sm:min-w-[35rem] }    
   .inputReset { @apply outline-none bg-transparent }
   .labelReset { @apply outline-none }
+  .btnSubmit { @apply p-4 rounded-md }
 }

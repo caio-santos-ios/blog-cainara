@@ -5,7 +5,7 @@ import { api } from "@/services/api"
 import { getCookie } from "cookies-next"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CiChat1, CiHeart } from "react-icons/ci"
 import { toast } from "react-toastify"
 
@@ -13,7 +13,6 @@ export const CardPost = ({ id, coverPhoto, photos, title, description, comments,
     const auth: string | undefined = getCookie("auth")
     const authDecoded = auth && JSON.parse(auth!)
 
-    const [isLike, setIsLike] = useState(_count.likes > 0 ? true : false)
     const [qtdLike, setQtdLike] = useState(_count.likes)
     const router = useRouter()
 
@@ -22,13 +21,16 @@ export const CardPost = ({ id, coverPhoto, photos, title, description, comments,
         
         try {
             const res = await api.post("/likes", { postId: Number(id) }, { headers: { Authorization: `Bearer ${authDecoded.token}` } })
-            console.log(res)
+            if(res.data == "deslike"){
+               setQtdLike(qtdLike - 1)
+            }else{
+                setQtdLike(qtdLike + 1)
+            }
         } catch (error) {console.log(error)}
     }
 
     const comment = (id: string) => {
-        if(!authDecoded) return toast("Faça login para comentar nos postes")
-
+        // if(!authDecoded) return toast("Faça login para comentar nos postes")
     }
 
     return(

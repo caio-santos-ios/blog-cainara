@@ -15,7 +15,7 @@ type Login = {
 
 export const LoginForm = () => {
     const [loading, setLoading] = useState(false)
-    const { register, handleSubmit, reset } = useForm<Login>()
+    const { register, handleSubmit } = useForm<Login>()
     const router = useRouter()
 
     const login = async (data: Login) => {

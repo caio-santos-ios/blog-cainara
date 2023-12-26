@@ -54,6 +54,12 @@ export class PostsService {
             }
           }
         },
+        likes: {
+          select: {
+            id: true,
+            accountId: true
+          }
+        },
         _count: true
       }
     })
@@ -74,6 +80,12 @@ export class PostsService {
                 name: true
               }
             }
+          }
+        },
+        likes: {
+          select: {
+            id: true,
+            accountId: true
           }
         },
         _count: true

@@ -41,7 +41,13 @@ export const ListPost = () => {
                     )
                 })
                 :
-                posts.map((post: Tpost) => <CardPost key={post.id} id={post.id} coverPhoto={post.coverPhoto} title={post.title} description={post.description} photos={post.photos} comments={post.comments} _count={post._count} authorId={post.authorId} /> )
+                posts.map((post: Tpost) => {
+                    return <CardPost key={post.id} id={post.id} coverPhoto={post.coverPhoto} title={post.title} description={post.description} photos={post.photos} comments={post.comments} likes={false} _count={post._count} authorId={post.authorId} />
+                    return(
+                        post.likes.map((el: any) => {
+                        })
+                    )
+                } )
             }
         </ul>
     )
