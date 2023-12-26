@@ -8,8 +8,8 @@ const createPost = () => {
         <main className="body">
             <VerifyLogged />
             <VerifyAdmin />
-            <section className="section flex justify-center items-center">
-                <Link href="/">Voltar</Link>
+            <section className="section flex justify-center items-center flex-col">
+                <Link className="p-4 bg-blue-500 text-white rounded-md" href="/">Voltar</Link>
                 <FormCreatePost />
             </section>
         </main>
