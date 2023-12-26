@@ -34,7 +34,7 @@ export const CardPost = ({ id, coverPhoto, photos, title, description, comments,
     }
 
     return(
-        <li id={String(id)} className="w-full rounded-lg max-w-[30rem] hover:shadow-xl hover:border-2 ">
+        <li id={String(id)} className="w-full rounded-lg border-2 max-w-[30rem] hover:shadow-xl hover:border-2 ">
            <Image id={String(coverPhoto.id)} onClick={() => router.push(`/${id}`)} className="w-full h-72 rounded-t-lg" width={100} height={100} alt="" src={coverPhoto.url} />
             <div className="rounded-b-lg roun p-4 bg-slate-100">
                 <h1 className="font-semibold text-2xl">{title}</h1>
